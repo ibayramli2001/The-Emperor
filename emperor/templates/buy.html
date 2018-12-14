@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Stock Search
+{% endblock %}
+{% block main %}
+    <!-- The following open sources were used during the implementation of this page:
+        https://codepen.io/cool_lazyboy/pen/gXEmra.
+    -->
+    <div class="stock-search-div">
+        <form action="/buy" method="post">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <div class="wrapper">
+                 <input type="text" autocomplete="off" name="symbol" id="second" placeholder="Search Stocks..." class="input">
+                 <div class="btn-buy">
+                   <i class="fa fa-search" aria-hidden="true"></i>
+                 </div>
+            </div>
+    </form>
+    </div>
+    <div class="table-headers-buy" style="font-family:'Oswald', Helvetica, sans-serif; font-size: 30px; margin-bottom: 1%;"> Most Gainers </div>
+    <div id="table-area" style="font-family:'Oswald', Helvetica, sans-serif;">
+        <table class="table table-sm table-light table-hover">
+            <th>
+                <td> Symbol </td>
+                <td> Price </td>
+                <td> Percent Change </td>
+            </th>
+            <tbody id="table-body-gainers">
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-bottom: 10%;">
+    <div class="table-headers-buy" style="font-family:'Oswald', Helvetica, sans-serif; font-size: 30px;"> Most Losers </div>
+    <div id="table-area" style="font-family:'Oswald', Helvetica, sans-serif;">
+        <table class="table table-sm table-light table-hover">
+            <th>
+                <td> Symbol </td>
+                <td> Price </td>
+                <td> Percent Change</td>
+            </th>
+            <tbody id="table-body-losers">
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <script>
+
+    // Loads data from server to tables
+    $.ajax({
+      url: 'https://api.iextrading.com/1.0/stock/market/list/gainers',
+      dataType: 'json',
+      success: function(data) {
+          var i = 0;
+            $.each(data, function (){
+                i += 1;
+                document.getElementById("table-body-gainers").innerHTML += '<tr>' + '<td>' + i + '</td>' + '<td>' + `<a href=/stockinfo?symbol=${this["symbol"]}>` +this["symbol"] + '</a>' + '</td>'+ '<td>' + this["latestPrice"] + '</td>' + '</td>'+ '<td class="changePercent">' + parseFloat(Math.round(this["changePercent"] * 100) / 100).toFixed(2) + '</td>' + '</tr>';
+            });
+          }});
+
+
+    $.ajax({
+        url: 'https://api.iextrading.com/1.0/stock/market/list/losers',
+        dataType: 'json',
+        success: function(data){
+        var i = 0;
+         $.each(data, function (){
+            i += 1;
+            document.getElementById("table-body-losers").innerHTML += '<tr>' + '<td>' + i + '</td>' + '<td>'  + `<a href=/stockinfo?symbol=${this["symbol"]}>` + this["symbol"] + '</td>'+ '<td>' + this["latestPrice"] + '</td>' + '</td>'+ '<td class="changePercent">' + parseFloat(Math.round(this["changePercent"] * 100) / 100).toFixed(2) + '</td>' + '</tr>';
+         });
+        }
+    });
+
+    // Table data update function
+    function update(){
+
+        function tableupdate_1(){
+          $.ajax({
+           url: 'https://api.iextrading.com/1.0/stock/market/list/gainers',
+           dataType: 'json',
+           success: function(data) {
+               var i = 0;
+                $.each(data, function (){
+                    i += 1;
+                    document.getElementById("table-body-gainers").innerHTML = '<tr>' + '<td>' + i + '</td>' + '<td>' + `<a href=/stockinfo?symbol=${this["symbol"]}>` +this["symbol"] + '</a>' + '</td>'+ '<td>' + this["latestPrice"] + '</td>' + '</td>'+ '<td class="changePercent">' + parseFloat(Math.round(this["changePercent"] * 100) / 100).toFixed(2) + '</td>' + '</tr>';
+                });
+              }});
+        }
+
+        function tableupdate_2(){
+             $.ajax({
+            url: 'https://api.iextrading.com/1.0/stock/market/list/losers',
+            dataType: 'json',
+            success: function(data){
+            var i = 0;
+             $.each(data, function (){
+                i += 1;
+                document.getElementById("table-body-losers").innerHTML = '<tr>' + '<td>' + i + '</td>' + '<td>'  + `<a href=/stockinfo?symbol=${this["symbol"]}>` + this["symbol"] + '</td>'+ '<td>' + this["latestPrice"] + '</td>' + '</td>'+ '<td class="changePercent">' + parseFloat(Math.round(this["changePercent"] * 100) / 100).toFixed(2) + '</td>' + '</tr>';
+             });
+            }
+    });
+    }
+    }
+
+    // set the interval of update to 10 seconds
+    $(document).ready(function(){
+     setInterval(update,10000);
+    });
+
+    // Search Button animation
+    $(".btn-buy").click(function(){
+    $(".input").toggleClass("active").focus;
+    $(this).toggleClass("animate");
+    });
+
+    // Click the Search Button automatically on load
+    $(document).ready(function() {
+       $(".btn-buy").click();
+    });
+
+    </script>
+{% endblock %}

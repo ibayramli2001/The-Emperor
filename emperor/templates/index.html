@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+{% block main %}
+    <table class="table" style="font-family:'Oswald', Helvetica, sans-serif;">
+      <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Name</th>
+          <th scope="col">Shares</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total Value</th>
+          <th scope="col"> % Return</th>
+          <th> Buy/Sell</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for element in data %}
+        <form action="/sell" method="post">
+          <tr>
+            <td><a class="link" href="#"> {{element[0].upper()}} </a></td>
+            <td>{{element[1]}}</td>
+            <td>{{element[2]}}</td>
+            <td>{{element[3]|usd}}</td>
+            <td>{{element[4]|usd}}</td>
+            <td class="change">{{element[5]}}</td>
+            <td class="index-table-td"><button class="home-buttons" type="submit" formaction="/stockbuy" id="buysubmit" disabled>Buy</button></td>
+            <td class="index-table-td"><button class="home-buttons" type="submit" disabled>Sell</button></td>
+            <td><input autocomplete="off" class="form-control" name="shares" placeholder="Shares" type="number" min="0" style=" overflow: visible; float: right;"></td>
+            <input type = "hidden" name = "symbol" value = {{element[0].upper()}} />
+          </tr>
+        </form>
+        {% endfor %}
+        <tr>
+          <td>CASH</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{cash|usd}}</td>
+        </tr>
+        <tr>
+          <td> Net Asset Value</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{grandsum|usd}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+
+    // For adding stock search links to the
+    $('.link').each(function() {
+      this.href = "/stockinfo?symbol=" + $(this).text().trim()
+    });
+
+    // For coloring the change appropriately (green, red)
+    $('.change').each(function() {
+      if (Number($(this).text()) < 0)
+      {
+        this.style.color="red";
+        $(this).append('%').css('color', "red");
+      }
+      else if (Number($(this).text()) > 0)
+      {
+        this.style.color="green";
+        $(this).append('%').css('color', "green");
+      }
+    }
+    );
+
+    $('.form-control').each(function() {
+      $(this).on('keyup', function () {
+			  if ($(this).val().length == 0) {
+				    $(this).html('Matching').css('color', 'red');
+				    $(this).closest('td').prev().children().prop('disabled', true);
+				    $(this).closest('td').prev().prev().children().prop('disabled', true);
+				  }
+				else {
+			    $(this).html('Matching').css('color', 'green');
+			    $(this).closest('td').prev().children().prop('disabled', false);
+			    $(this).closest('td').prev().prev().children().prop('disabled', false);
+			  }
+			  });
+    });
+    </script>
+{% endblock %}

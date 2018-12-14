@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="/static/homepage.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <title>The Emperor: Apology</title>
+    </head>
+    <body class="home">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: transparent;">
+            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                {% if session.user_id %}
+                    <ul class="navbar-nav mr-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/index">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/buy">Stock Search</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/changepass">Change Password</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/transfer">Transfer Money</a></li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </nav>
+        <main>
+            <div class="error-top"><div class="error-top-inner">{{top}}</div></div>
+            <div class="error-bottom"><div class="error-bottom-inner"> {{bottom}} </div></div>
+		</main>
+    </body>
+</html>

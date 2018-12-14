@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post" id="form1">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="register-password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <script>
+            let input = document.querySelector('input');
+            document.querySelector("form").onsubmit = function(event)  {  event.preventDefault();
+                $.get('/check?username=' + input.value, function(data) {
+                    if (!data)
+                    {
+                        alert("This username is already taken");
+                    }
+                    else
+                    {
+                        document.getElementById("form1").submit();
+                    }
+                });
+            };
+
+    </script>
+{% endblock %}

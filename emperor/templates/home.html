@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!-- The following sources were used in implementation of this page: -->
+<!-- https://codepen.io/matchboxhero/pen/JrLJeb?editors=1100 -->
+<!--  https://codepen.io/heypablete/pen/qdIsm -->
+<!-- https://bootsnipp.com/snippets/vl4R7 -->
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <!--Fontawesome CDN-->
+    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
+        <link href="/static/favicon.ico" rel="icon">
+        <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link href="/static/homepage.css" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+        <title>The Emperor: {% block title %}{% endblock %}</title>
+    </head>
+    <body class="home">
+        <main>
+    	<div class="emperor-sign-center">
+            <h1>The<br>EMPEROR<br></h1>
+            <br>
+            <table class="container-table"><tbody class="container-table-body"><tr class="container-table-row"><td><button class="home-buttons" onclick="loginappear()">Log In</button></td><td> <button class="home-buttons" onclick="signupappear()">Sign Up</button> </td></tr></tbody></table>
+		</div>
+        <div class="emperor">
+            <div class="container-sign-in" id="container-sign-in">
+            	<div class="d-flex justify-content-center h-100">
+            		<div class="card">
+            			<div class="card-header">
+            				<h3>Sign In</h3>
+            			</div>
+            			<div class="card-body">
+            				<form id="login" action="/login" method="post">
+            					<div class="input-group form-group">
+            						<div class="input-group-prepend">
+            							<span class="input-group-text"><i class="fas fa-user"></i></span>
+            						</div>
+            						<input autocomplete="off" type="text" class="form-control" placeholder="Username" name="username">
+            					</div>
+            					<div class="input-group form-group">
+            						<div class="input-group-prepend">
+            							<span class="input-group-text"><i class="fas fa-key"></i></span>
+            						</div>
+            						<input type="password" class="form-control" name="password" placeholder="Password">
+            					</div>
+            					<br>
+            					<div class="form-group">
+            						<button class="btn float-left login_btn" type="submit">Log In</button>
+            					</div>
+            				</form>
+            			</div>
+            			<div class="card-footer">
+            				<div class="d-flex justify-content-center links">
+            					Don't have an account?<button onclick="signupappear()" style="background-color: transparent; border: 0; color: blue;" >Sign Up</button>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <div class="container-register" id="container-register">
+            	<div class="d-flex justify-content-center h-100">
+            		<div class="card">
+            			<div class="card-header">
+            				<h3>Register</h3>
+            			</div>
+            			<div class="card-body">
+            				<form id="register" name="register" action="/register" method="post">
+            					<div class="input-group form-group">
+            						<div class="input-group-prepend">
+            							<span class="input-group-text"><i class="fas fa-user"></i></span>
+            						</div>
+            						<input type="text" autocomplete="off" class="form-control" name="username" placeholder="Username">
+            					</div>
+            					<div class="input-group form-group">
+            						<div class="input-group-prepend">
+            							<span class="input-group-text"><i class="fas fa-key"></i></span>
+            						</div>
+            						<input type="password" name="register-password" class="form-control" id="register-password" placeholder="Password">
+            					</div>
+            					<div class="input-group form-group">
+            						<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-key"></i></span>
+            						</div>
+            						<input type="password" class="form-control" name="confirmation" id="register-confirm" placeholder="Confirm Password">
+            					</div>
+            					<div class="form-group">
+            						<div id="message"></div>
+            						<button id="register-submit" class="btn float-right login_btn" type="submit" disabled>Register</button>
+            					</div>
+            				</form>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+        </div>
+        <!-- snow effect -->
+        <div class="snow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1536" preserveAspectRatio="xMidYMax slice">
+		    <g fill="#FFF" fill-opacity=".15" transform="translate(55 42)">
+			   <g id="snow-bottom-layer">
+				  <ellipse cx="6" cy="1009.5" rx="6" ry="5.5"/>
+				  <ellipse cx="138" cy="1110.5" rx="6" ry="5.5"/>
+				  <ellipse cx="398" cy="1055.5" rx="6" ry="5.5"/>
+				  <ellipse cx="719" cy="1284.5" rx="6" ry="5.5"/>
+				  <ellipse cx="760" cy="1155.5" rx="6" ry="5.5"/>
+				  <ellipse cx="635" cy="1459.5" rx="6" ry="5.5"/>
+				  <ellipse cx="478" cy="1335.5" rx="6" ry="5.5"/>
+				  <ellipse cx="322" cy="1414.5" rx="6" ry="5.5"/>
+				  <ellipse cx="247" cy="1234.5" rx="6" ry="5.5"/>
+				  <ellipse cx="154" cy="1425.5" rx="6" ry="5.5"/>
+				  <ellipse cx="731" cy="773.5" rx="6" ry="5.5"/>
+				  <ellipse cx="599" cy="874.5" rx="6" ry="5.5"/>
+				  <ellipse cx="339" cy="819.5" rx="6" ry="5.5"/>
+				  <ellipse cx="239" cy="1004.5" rx="6" ry="5.5"/>
+				  <ellipse cx="113" cy="863.5" rx="6" ry="5.5"/>
+				  <ellipse cx="102" cy="1223.5" rx="6" ry="5.5"/>
+				  <ellipse cx="395" cy="1155.5" rx="6" ry="5.5"/>
+				  <ellipse cx="826" cy="943.5" rx="6" ry="5.5"/>
+				  <ellipse cx="626" cy="1054.5" rx="6" ry="5.5"/>
+				  <ellipse cx="887" cy="1366.5" rx="6" ry="5.5"/>
+				  <ellipse cx="6" cy="241.5" rx="6" ry="5.5"/>
+				  <ellipse cx="138" cy="342.5" rx="6" ry="5.5"/>
+				  <ellipse cx="398" cy="287.5" rx="6" ry="5.5"/>
+				  <ellipse cx="719" cy="516.5" rx="6" ry="5.5"/>
+				  <ellipse cx="760" cy="387.5" rx="6" ry="5.5"/>
+				  <ellipse cx="635" cy="691.5" rx="6" ry="5.5"/>
+				  <ellipse cx="478" cy="567.5" rx="6" ry="5.5"/>
+				  <ellipse cx="322" cy="646.5" rx="6" ry="5.5"/>
+				  <ellipse cx="247" cy="466.5" rx="6" ry="5.5"/>
+				  <ellipse cx="154" cy="657.5" rx="6" ry="5.5"/>
+				  <ellipse cx="731" cy="5.5" rx="6" ry="5.5"/>
+				  <ellipse cx="599" cy="106.5" rx="6" ry="5.5"/>
+				  <ellipse cx="339" cy="51.5" rx="6" ry="5.5"/>
+				  <ellipse cx="239" cy="236.5" rx="6" ry="5.5"/>
+				  <ellipse cx="113" cy="95.5" rx="6" ry="5.5"/>
+				  <ellipse cx="102" cy="455.5" rx="6" ry="5.5"/>
+				  <ellipse cx="395" cy="387.5" rx="6" ry="5.5"/>
+				  <ellipse cx="826" cy="175.5" rx="6" ry="5.5"/>
+				  <ellipse cx="626" cy="286.5" rx="6" ry="5.5"/>
+				  <ellipse cx="887" cy="598.5" rx="6" ry="5.5"/>
+			   </g>
+		    </g>
+		    <g fill="#FFF" fill-opacity=".3" transform="translate(65 63)">
+			   <g id="snow-top-layer">
+				  <circle cx="8" cy="776" r="8"/>
+				  <circle cx="189" cy="925" r="8"/>
+				  <circle cx="548" cy="844" r="8"/>
+				  <circle cx="685" cy="1115" r="8"/>
+				  <circle cx="858" cy="909" r="8"/>
+				  <circle cx="874" cy="1438" r="8" transform="rotate(180 874 1438)"/>
+				  <circle cx="657" cy="1256" r="8" transform="rotate(180 657 1256)"/>
+				  <circle cx="443" cy="1372" r="8" transform="rotate(180 443 1372)"/>
+				  <circle cx="339" cy="1107" r="8" transform="rotate(180 339 1107)"/>
+				  <circle cx="24" cy="1305" r="8" transform="rotate(180 24 1305)"/>
+				  <circle cx="8" cy="8" r="8"/>
+				  <circle cx="189" cy="157" r="8"/>
+				  <circle cx="548" cy="76" r="8"/>
+				  <circle cx="685" cy="347" r="8"/>
+				  <circle cx="858" cy="141" r="8"/>
+				  <circle cx="874" cy="670" r="8" transform="rotate(180 874 670)"/>
+				  <circle cx="657" cy="488" r="8" transform="rotate(180 657 488)"/>
+				  <circle cx="443" cy="604" r="8" transform="rotate(180 443 604)"/>
+				  <circle cx="339" cy="339" r="8" transform="rotate(180 339 339)"/>
+				  <circle cx="24" cy="537" r="8" transform="rotate(180 24 537)"/>
+			   </g>
+		    </g>
+		    </svg>
+		</div>
+
+		<script>
+
+			// login and signup windows showup effect
+			function loginappear(){
+				var element = document.getElementById("container-sign-in");
+				if (element.style.display === "none") {
+			        element.style.display = "block";
+			    } else {
+			        element.style.display = "none";
+			    }
+			}
+
+			function signupappear(){
+				var element = document.getElementById("container-register");
+				if (element.style.display === "none") {
+			        element.style.display = "block";
+			    } else {
+			        element.style.display = "none";
+			    }
+			}
+
+			// username check function
+            let input = document.querySelectorAll('input')[2];
+            console.log(input);
+            document.querySelectorAll("form")[1].onsubmit = function(event)  {  event.preventDefault();
+                $.get('/check?username=' + input.value, function(data) {
+                    if (!data)
+                    {
+                        alert("This username is already taken");
+                    }
+                    else
+                    {
+                        document.getElementById("register").submit();
+                    }
+                });
+            	};
+
+			var i = 0;
+	     	// Password validation:
+			function passvalidate() {
+				var input = document.getElementById("register-password").value
+				var pass = document.getElementById("register-password").value
+	            if (!pass.match(/[a-z]/)) {
+	            	i = 0;
+	                $('#register-submit').prop('disabled', true);
+	            }
+
+	            if ((pass).length < 8) {
+	            	i = 0;
+	                $('#register-submit').prop('disabled', true);
+	            }
+
+	            if (!pass.match(/[A-Z]/)) {
+	            	i = 0;
+	                $('#register-submit').prop('disabled', true);
+	            }
+
+	            if (!pass.match(/\d+/g)) {
+	            	i = 0;
+	                $('#register-submit').prop('disabled', true);
+	            }
+
+	            else
+	            {
+					i = 1;
+	            }
+
+			}
+	     	// Password and confirmation matching check:
+            $('#register-password, #register-confirm').on('keyup', function () {
+				  if ($('#register-password').val() == $('#register-confirm').val() && $('#register-password').val() != "") {
+				    $('#message').html('Matching').css('color', 'green');
+				    console.log(i);
+				    if (i == 1){
+				    	$('#register-submit').prop('disabled', false);
+				    }
+				    else {
+				    	alert("Password should include at least one lowercase, uppercase, numeric, and special character")
+				    	$('#register-submit').prop('disabled', true);
+				    }
+				  }
+				  else {
+				    $('#message').html('Not Matching').css('color', 'red');
+				    	$('#register-submit').prop('disabled', true);
+				  }
+			});
+
+		$(document).ready(function(){
+        setInterval(passvalidate,1000);
+        });
+    	</script>
+		</main>
+    </body>
+
+</html>
+
+

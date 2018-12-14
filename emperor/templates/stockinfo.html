@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Stock Info
+{% endblock %}
+{% block main %}
+    <div class="stockinfo-header">
+        <span style="width: 40">  Stock Information  </span>
+        <span class="table-space">
+            <form action="/sell" method="post">
+            <table class="container-table-stockinfo">
+                <tbody class="container-table-body-stockinfo">
+                    <tr class="container-table-row-stockinfo">
+                            <td><button class="home-buttons" type="submit" formaction="/stockbuy" id="buysubmit" disabled>Buy</button></td>
+                            <td><button class="home-buttons" type="submit" id="sellsubmit" disabled>Sell</button></td>
+                            <td><input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Shares" type="number" min="0" id="shares"></td>
+                            <input type = "hidden" name = "symbol" value = {{symbol}} />
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </span>
+    </div>
+    <div class="stockinfo-company-name">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                         <img src={{profile['image']}} alt={{profile["companyName"]}}>
+                    </td>
+                    <td>
+                         <a href={{profile["website"]}}>{{profile["companyName"]}}</a>
+                    </td>
+                    <td>
+                         {{profile["sector"]}}
+                    </td>
+                    <td id="header-price">
+
+                    </td>
+                    <td id="sign">
+
+                    </td>
+                    <td id="change">
+                         {{profile["ChangesPerc"]}}
+                    </td>
+                    <td id="sign2">
+
+                    </td>
+                    <td id="change2">
+                         {{profile["Changes"]}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 5%;">
+        <div>
+          <!-- Table starts here -->
+          <table id="table" class="table table-bordered table-hover" style="font-family:'Oswald', Helvetica, sans-serif; font-weight: lighter;">
+                <tbody>
+                <tr>
+                    <td data-title="Name"> Symbol </td>
+                    <td data-title="Status" id="symbol" > {{symbol.upper()}}</td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Price </td>
+                    <td data-title="Status" id="price"> </td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Beta </td>
+                    <td data-title="Status">{{profile["Beta"]}}</td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Avg Volume </td>
+                    <td data-title="Status"> {{profile["VolAvg"]}} K</td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Market Cap. </td>
+                    <td data-title="Status"> {{profile["MktCap"]}} M</td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Income Statement </td>
+                    <td data-title="Status"><a href={{financials[0]}}> NASDAQ </a></td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Balance Sheet </td>
+                    <td data-title="Status"><a href={{financials[1]}}> NASDAQ </a></td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Cash Flow </td>
+                    <td data-title="Status"><a href={{financials[2]}}> NASDAQ </a></td>
+                </tr>
+                <tr>
+                    <td data-title="Name"> Financial Ratios </td>
+                    <td data-title="Status"><a href={{financials[3]}}> NASDAQ </a></td>
+                </tr>
+            </tbody>
+            </table>
+          </div>
+        </table>
+    </div>
+    <div>
+    <iframe width="900" height="800" frameborder="0" scrolling="no" src={{graphic}}></iframe>
+    </div>
+    <script>
+
+    // This part updates the price column in real time
+
+    // Function that gets the symbol passed to the url
+        $.urlParam = function(name)
+        {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results==null)
+                {
+                  return null;
+                }
+            return decodeURI(results[1]) || 0;
+        }
+    // Get the latest price from the server
+        var symbol = ($.urlParam("symbol")).replace(/\s\s+/g, '');
+        var url = "https://api.iextrading.com/1.0/stock/" + symbol + "/quote";
+
+    // Update the price
+        function priceupdate(){
+        $.get( url, function( data )
+        {
+          document.getElementById("price").innerHTML = '<td data-title="Status" id="price" >' + data["latestPrice"] + '</td>';
+          document.getElementById("header-price").innerHTML = '<td id="header-price" >' + data["latestPrice"] + '</td>';
+        });
+        }
+    // set the interval of update to 5 seconds
+        $(document).ready(function(){
+         setInterval(priceupdate,1000);
+        });
+
+    // function to color the stock price change based on its movement (red - increase, green - decrease)
+       if (Number($('#change').text()) < 0)
+       {
+        document.getElementById("change").style.color="red";
+        document.getElementById("change2").style.color="red";
+        $('#change').append('%').css('color', "red");
+        $('#sign').append('▼').css('color', "red");
+        $('#sign2').append('▼').css('color', "red");
+       }
+       else if (Number($('#change').text()) > 0)
+       {
+        document.getElementById("change").style.color="green";
+        document.getElementById("change2").style.color="green";
+        $('#change').append('%').css('color', "green");
+        $('#sign').append('▲').css('color', "green");
+        $('#sign2').append('▲').css('color', "green");
+       }
+
+    // Function that checks whether the 'shares' tab has a valid value and if not prevents submission
+        $('#shares').on('keyup', function () {
+					  if ($('#shares').val().length == 0) {
+    				    $('#shares').html('Matching').css('color', 'red');
+    				    $('#buysubmit').prop('disabled', true);
+                        $('#sellsubmit').prop('disabled', true);
+    				  }
+    				  else {
+					    $('#shares').html('Matching').css('color', 'green');
+    				    $('#buysubmit').prop('disabled', false);
+                        $('#sellsubmit').prop('disabled', false);
+					  }
+		});
+    </script>
+{% endblock %}

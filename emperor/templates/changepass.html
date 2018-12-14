@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Change Password
+{% endblock %}
+{% block main %}
+     <form action="/changepass" method="post">
+        <div class="form-group" style="margin-top: 5%">
+            <input class="form-control" name="oldpassword" placeholder="Old Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="newpassword" id="newpassword" placeholder="New Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit" id="submit">Change Password</button>
+    </form>
+    <script>
+        function passvalidate() {
+            console.log("hey")
+			var pass = document.getElementById("newpassword").value
+			console.log(pass);
+            if (!pass.match(/[a-z]/)) {
+                console.log("passes first if")
+                $('#submit').prop('disabled', true);
+            }
+
+            if ((pass).length < 8) {
+                $('#submit').prop('disabled', true);
+            }
+
+            if (!pass.match(/[A-Z]/)) {
+                $('#submit').prop('disabled', true);
+            }
+
+            if (!pass.match(/\d+/g)) {
+                $('#submit').prop('disabled', true);
+            }
+
+            else{
+            $('#submit').prop('disabled', false);
+            }
+        }
+            $(document).ready(function(){
+                setInterval(passvalidate,1000);
+            });
+    </script>
+{% endblock %}
