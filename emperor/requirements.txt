@@ -45,7 +45,7 @@ mccabe==0.6.1
 more-itertools==4.3.0
 natsort==5.2.0
 nbformat==4.4.0
-nltk==3.2.5
+nltk==3.4.5
 numpy==1.15.4
 oauthlib==2.0.7
 pandas==0.23.4
